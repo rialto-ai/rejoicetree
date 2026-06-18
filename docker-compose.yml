@@ -1,0 +1,33 @@
+# Rejoice Pages — Docker Compose
+#
+# Quick start:
+#   docker compose up -d --build
+#   open http://localhost:8080
+#
+# The app auto-installs on first run (sqlite) and creates the default LinkStack
+# admin (admin@admin.com / 12345678) — CHANGE THIS IMMEDIATELY, or set
+# ADMIN_EMAIL / ADMIN_PASSWORD below before the first start.
+services:
+  app:
+    build: .
+    image: rejoice-pages:latest
+    ports:
+      - "8080:80"
+    environment:
+      AUTO_INSTALL: "true"      # set "false" to use the LinkStack web installer instead
+      SEED_DEMO: "false"        # set "true" to seed demo creator/ministry pages
+      OPTIMIZE: "true"          # cache config/routes/views on boot
+      # ADMIN_EMAIL: "you@example.com"
+      # ADMIN_PASSWORD: "change-me"
+      # For stable sessions/encryption across container rebuilds, set a fixed key:
+      # APP_KEY: "base64:GENERATE_WITH_php_artisan_key_generate_show"
+    volumes:
+      # Named volumes persist uploads, sessions, logs, and the sqlite database
+      # across container recreation. (On first use Docker seeds them from the image.)
+      - rejoice-storage:/var/www/html/storage
+      - rejoice-db:/var/www/html/database
+    restart: unless-stopped
+
+volumes:
+  rejoice-storage:
+  rejoice-db:
