@@ -20,6 +20,42 @@ podcasters, authors, speakers, ministries, events, builders, and mission partner
 | `/pages/examples` | Example pages |
 | `/pages/creator-waitlist` | Creator waitlist sign-up |
 
+## Deploying with Docker
+
+Rejoice Pages is a PHP/Laravel application and is built to run on a PHP-capable
+host (Apache + PHP 8.2). It does **not** run on static/serverless-only platforms
+such as a default Vercel project.
+
+The simplest path is Docker Compose:
+
+```bash
+docker compose up -d --build
+# open http://localhost:8080
+```
+
+On first run the container auto-installs (sqlite), runs migrations, seeds the
+link buttons, and creates the default LinkStack admin
+(`admin@admin.com` / `12345678`) — **change this immediately**, or set
+`ADMIN_EMAIL` / `ADMIN_PASSWORD` in `docker-compose.yml` before the first start.
+Set `SEED_DEMO=true` to also create the demo creator/ministry pages.
+
+Or build and run the image directly:
+
+```bash
+docker build -t rejoice-pages .
+docker run -d -p 8080:80 rejoice-pages
+```
+
+Prefer the LinkStack web installer instead of auto-install? Set
+`AUTO_INSTALL=false` and complete setup in the browser on first visit.
+
+> **Note on the dependency lockfile:** the upstream `composer.lock` was stale
+> (it predated `nunomaduro/collision` and `symfony/yaml` being added to
+> `composer.json`, and still listed translation-publishing tooling that is no
+> longer a dependency). It has been reconciled so a standard
+> `composer install --no-dev` succeeds; committed translations in
+> `resources/lang/` are unaffected.
+
 ## Built on open source
 
 > Rejoice Pages is built on open-source LinkStack infrastructure.

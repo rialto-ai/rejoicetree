@@ -1,0 +1,18 @@
+.git
+.github
+node_modules
+vendor
+# Runtime/dev state — never bake into the image
+database/database.sqlite
+storage/app/ISINSTALLED
+storage/app/rejoice-settings.json
+storage/app/creator-waitlist.jsonl
+storage/logs/*.log
+storage/framework/cache/data/*
+storage/framework/sessions/*
+storage/framework/views/*.php
+.phpunit.result.cache
+*.zip
+Homestead.json
+Homestead.yaml
+docker-compose.override.yml
