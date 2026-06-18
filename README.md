@@ -1,3 +1,36 @@
+# Rejoice Pages
+
+**A trusted home for Christian creators.**
+
+Bring your music, podcasts, books, sermons, events, support links, bookings,
+testimony, and ministry work into one simple page.
+
+> One page. One link. A clearer way to share your work.
+
+Rejoice Pages is a trusted public profile layer for Christian creators, artists,
+podcasters, authors, speakers, ministries, events, builders, and mission partners.
+
+## Public marketing pages
+
+| Route | Description |
+| --- | --- |
+| `/pages` | Landing page |
+| `/pages/faq` | Frequently asked questions |
+| `/pages/create` | How to create a page |
+| `/pages/examples` | Example pages |
+| `/pages/creator-waitlist` | Creator waitlist sign-up |
+
+## Built on open source
+
+> Rejoice Pages is built on open-source LinkStack infrastructure.
+
+Rejoice Pages is a customized fork of [LinkStack](https://github.com/LinkStackOrg/LinkStack),
+licensed under the **GNU Affero General Public License v3**. All upstream
+copyright, license, and attribution files are preserved. See [`LICENSE`](LICENSE)
+for the full license text. The original LinkStack documentation follows below.
+
+---
+
 <p align="center">
   <img width="200px" src="https://raw.githubusercontent.com/LinkStackOrg/branding/main/logo/svg/logo_animated.svg"><br>
   <br>

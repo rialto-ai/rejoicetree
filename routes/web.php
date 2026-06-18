@@ -58,6 +58,15 @@ if(env('MAINTENANCE_MODE') != 'true'){
 
 require __DIR__.'/home.php';
 
+// Rejoice Pages public marketing pages
+Route::get('/pages', [App\Http\Controllers\RejoicePagesController::class, 'index'])->name('rejoice.landing')->middleware('disableCookies');
+Route::get('/pages/faq', [App\Http\Controllers\RejoicePagesController::class, 'faq'])->name('rejoice.faq')->middleware('disableCookies');
+Route::get('/pages/create', [App\Http\Controllers\RejoicePagesController::class, 'create'])->name('rejoice.create')->middleware('disableCookies');
+Route::get('/pages/examples', [App\Http\Controllers\RejoicePagesController::class, 'examples'])->name('rejoice.examples')->middleware('disableCookies');
+// The waitlist form needs a real session for CSRF, so it is not cookieless.
+Route::get('/pages/creator-waitlist', [App\Http\Controllers\RejoicePagesController::class, 'waitlist'])->name('rejoice.waitlist');
+Route::post('/pages/creator-waitlist', [App\Http\Controllers\RejoicePagesController::class, 'joinWaitlist'])->name('rejoice.waitlist.join');
+
 //Redirect if no page URL is set
 Route::get('/@', function () {
     return redirect('/studio/no_page_name');

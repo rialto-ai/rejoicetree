@@ -20,9 +20,9 @@ return [
     'by' => 'by',
 
     'HOME.MESSAGE' => '
-    <p>Take control of your online presence with&nbsp;<a href="https://linkstack.org/"><strong>LinkStack</strong></a>
-     the privacy-focused, open-source <strong>link management platform</strong>. Create a customizable profile page to manage <strong>
-     all your important links in one convenient location</strong> and give your audience a seamless browsing experience.</p>
+    <p><strong>A trusted home for Christian creators.</strong><br>
+     Bring your music, podcasts, books, sermons, events, support links, bookings, testimony,
+     and ministry work into one simple page. One page. One link. A clearer way to share your work.</p>
      ',
 
 
