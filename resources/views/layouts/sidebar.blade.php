@@ -142,6 +142,47 @@ $usrhandl = Auth::user()->littlelink_name;
                             <span class="item-name">{{__('messages.Add Link')}}</span>
                         </a>
                     </li>
+
+                    {{-- Rejoice creator section --}}
+                    <li class="nav-item static-item">
+                        <a class="nav-link static-item disabled" href="#" tabindex="-1">
+                            <span class="default-icon">Rejoice</span>
+                            <span class="mini-icon">-</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ Request::segment(2) == 'onboarding' ? 'active' : ''}}" href="{{ route('creator.onboarding') }}">
+                            <i class="icon"><i class="bi bi-stars"></i></i>
+                            <span class="item-name">Onboarding</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ Request::segment(2) == 'profile' && Request::segment(1) == 'creator' ? 'active' : ''}}" href="{{ route('creator.profile') }}">
+                            <i class="icon"><i class="bi bi-person-badge"></i></i>
+                            <span class="item-name">My Rejoice Page</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ Request::segment(2) == 'blocks' ? 'active' : ''}}" href="{{ route('creator.blocks') }}">
+                            <i class="icon"><i class="bi bi-grid-1x2"></i></i>
+                            <span class="item-name">Blocks</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ Request::segment(2) == 'analytics' && Request::segment(1) == 'creator' ? 'active' : ''}}" href="{{ route('creator.analytics') }}">
+                            <i class="icon"><i class="bi bi-graph-up"></i></i>
+                            <span class="item-name">Analytics</span>
+                        </a>
+                    </li>
+                    @if(auth()->user()->isRejoiceReviewer())
+                    <li class="nav-item">
+                        <a class="nav-link {{ Request::segment(1) == 'admin' && Request::segment(2) == 'pages' ? 'active' : ''}}" href="{{ route('rejoice.admin.creators') }}">
+                            <i class="icon"><i class="bi bi-shield-check"></i></i>
+                            <span class="item-name">Rejoice Admin</span>
+                        </a>
+                    </li>
+                    @endif
+
                     @if(auth()->user()->role == 'admin')
                     <li class="nav-item static-item">
                         <a class="nav-link static-item disabled" href="#" tabindex="-1">

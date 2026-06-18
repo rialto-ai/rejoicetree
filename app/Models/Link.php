@@ -9,7 +9,28 @@ class Link extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['link', 'title', 'button_id', 'type_params', 'type', 'custom_icon'];
+    protected $fillable = [
+        'link', 'title', 'button_id', 'type_params', 'type', 'custom_icon',
+        'block_type', 'block_params', 'review_status', 'support_type',
+        'tax_deductible_claimed', 'support_entity_name', 'review_required',
+    ];
+
+    protected $casts = [
+        'tax_deductible_claimed' => 'boolean',
+        'review_required' => 'boolean',
+    ];
+
+    /**
+     * Decode the block-specific structured fields (stored as JSON).
+     */
+    public function blockParams(): array
+    {
+        if (empty($this->block_params)) {
+            return [];
+        }
+
+        return json_decode($this->block_params, true) ?: [];
+    }
 
     protected static function boot()
     {

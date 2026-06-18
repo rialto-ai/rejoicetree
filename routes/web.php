@@ -67,6 +67,44 @@ Route::get('/pages/examples', [App\Http\Controllers\RejoicePagesController::clas
 Route::get('/pages/creator-waitlist', [App\Http\Controllers\RejoicePagesController::class, 'waitlist'])->name('rejoice.waitlist');
 Route::post('/pages/creator-waitlist', [App\Http\Controllers\RejoicePagesController::class, 'joinWaitlist'])->name('rejoice.waitlist.join');
 
+// Public "Report this page" flow
+Route::get('/report-page/{slug}', [App\Http\Controllers\RejoicePagesController::class, 'reportForm'])->name('rejoice.report.form');
+Route::post('/report-page/{slug}', [App\Http\Controllers\RejoicePagesController::class, 'submitReport'])->name('rejoice.report.submit');
+
+// Rejoice creator area (authenticated)
+Route::middleware(['auth', 'blocked'])->group(function () {
+    Route::get('/creator/onboarding', [App\Http\Controllers\CreatorController::class, 'onboarding'])->name('creator.onboarding');
+    Route::get('/creator/profile', [App\Http\Controllers\CreatorController::class, 'profile'])->name('creator.profile');
+    Route::post('/creator/profile', [App\Http\Controllers\CreatorController::class, 'saveProfile'])->name('creator.profile.save');
+    Route::post('/creator/submit', [App\Http\Controllers\CreatorController::class, 'submitForReview'])->name('creator.submit');
+    Route::get('/creator/analytics', [App\Http\Controllers\CreatorController::class, 'analytics'])->name('creator.analytics');
+
+    Route::get('/creator/blocks', [App\Http\Controllers\CreatorBlockController::class, 'index'])->name('creator.blocks');
+    Route::get('/creator/blocks/create', [App\Http\Controllers\CreatorBlockController::class, 'create'])->name('creator.blocks.create');
+    Route::post('/creator/blocks', [App\Http\Controllers\CreatorBlockController::class, 'store'])->name('creator.blocks.store');
+    Route::get('/creator/blocks/{id}/edit', [App\Http\Controllers\CreatorBlockController::class, 'edit'])->name('creator.blocks.edit');
+    Route::delete('/creator/blocks/{id}', [App\Http\Controllers\CreatorBlockController::class, 'destroy'])->name('creator.blocks.destroy');
+
+    // Rejoice admin / review tooling. Namespaced under /admin/rejoice to avoid
+    // colliding with LinkStack's existing /admin/pages site-page editor.
+    Route::prefix('admin/rejoice')->group(function () {
+        Route::get('/creators', [App\Http\Controllers\Admin\RejoiceAdminController::class, 'creators'])->name('rejoice.admin.creators');
+        Route::get('/pending', [App\Http\Controllers\Admin\RejoiceAdminController::class, 'pending'])->name('rejoice.admin.pending');
+        Route::get('/flagged', [App\Http\Controllers\Admin\RejoiceAdminController::class, 'flagged'])->name('rejoice.admin.flagged');
+        Route::get('/verification', [App\Http\Controllers\Admin\RejoiceAdminController::class, 'verification'])->name('rejoice.admin.verification');
+        Route::get('/audio-onboarding', [App\Http\Controllers\Admin\RejoiceAdminController::class, 'audioOnboarding'])->name('rejoice.admin.audio');
+        Route::get('/support-links', [App\Http\Controllers\Admin\RejoiceAdminController::class, 'supportLinks'])->name('rejoice.admin.support');
+        Route::get('/settings', [App\Http\Controllers\Admin\RejoiceAdminController::class, 'settings'])->name('rejoice.admin.settings');
+
+        Route::post('/settings', [App\Http\Controllers\Admin\RejoiceAdminController::class, 'saveSettings'])->name('rejoice.admin.settings.save');
+        Route::post('/page/{userId}/review', [App\Http\Controllers\Admin\RejoiceAdminController::class, 'updateReview'])->name('rejoice.admin.review');
+        Route::post('/page/{userId}/verification', [App\Http\Controllers\Admin\RejoiceAdminController::class, 'updateVerification'])->name('rejoice.admin.verify');
+        Route::post('/page/{userId}/audio', [App\Http\Controllers\Admin\RejoiceAdminController::class, 'updateAudio'])->name('rejoice.admin.audio.update');
+        Route::post('/link/{linkId}/review', [App\Http\Controllers\Admin\RejoiceAdminController::class, 'updateLink'])->name('rejoice.admin.link');
+        Route::post('/report/{reportId}/resolve', [App\Http\Controllers\Admin\RejoiceAdminController::class, 'resolveReport'])->name('rejoice.admin.report.resolve');
+    });
+});
+
 //Redirect if no page URL is set
 Route::get('/@', function () {
     return redirect('/studio/no_page_name');

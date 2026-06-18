@@ -24,6 +24,7 @@
             @include('linkstack.elements.heading')
             @include('linkstack.elements.bio')
         @endforeach
+        @include('rejoice.public-profile')
         @include('linkstack.elements.icons')
         @include('linkstack.elements.buttons')
         @yield('content')

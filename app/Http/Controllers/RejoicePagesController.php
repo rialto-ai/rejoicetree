@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 /**
  * Public marketing pages for Rejoice Pages.
@@ -81,5 +82,38 @@ class RejoicePagesController extends Controller
         Storage::disk('local')->append('creator-waitlist.jsonl', json_encode($entry));
 
         return redirect()->route('rejoice.waitlist')->with('waitlist_joined', true);
+    }
+
+    // GET /report-page/{slug} — public "Report this page" form
+    public function reportForm($slug)
+    {
+        $page = \App\Models\User::where('littlelink_name', $slug)->firstOrFail();
+
+        return view('rejoice.report', [
+            'page' => $page,
+            'reasons' => config('rejoice.flag_reasons'),
+        ]);
+    }
+
+    // POST /report-page/{slug}
+    public function submitReport(Request $request, $slug)
+    {
+        $page = \App\Models\User::where('littlelink_name', $slug)->firstOrFail();
+
+        $data = $request->validate([
+            'reason' => ['required', Rule::in(config('rejoice.flag_reasons'))],
+            'description' => 'nullable|string|max:2000',
+            'reporter_email' => 'nullable|email|max:190',
+        ]);
+
+        \App\Models\PageReport::create([
+            'page_id' => $page->id,
+            'reason' => $data['reason'],
+            'description' => $data['description'] ?? null,
+            'reporter_email' => $data['reporter_email'] ?? null,
+            'status' => 'Open',
+        ]);
+
+        return redirect()->route('rejoice.report.form', ['slug' => $slug])->with('report_sent', true);
     }
 }

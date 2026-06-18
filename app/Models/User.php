@@ -26,6 +26,9 @@ class User extends Authenticatable implements MustVerifyEmail
         'provider_id',
         'email_verified_at',
         'littlelink_name',
+        'rejoice_role',
+        'organization_name',
+        'organization_type',
     ];
 
     /**
@@ -55,6 +58,33 @@ class User extends Authenticatable implements MustVerifyEmail
     public function socialAccounts()
     {
         return $this->hasMany(SocialAccount::class);
+    }
+
+    public function creatorProfile()
+    {
+        return $this->hasOne(CreatorProfile::class);
+    }
+
+    /**
+     * Get the Rejoice profile, creating an empty one on demand so callers can
+     * safely read/write profile fields for any user.
+     */
+    public function profile(): CreatorProfile
+    {
+        return $this->creatorProfile()->firstOrCreate(['user_id' => $this->id]);
+    }
+
+    /**
+     * Whether this user can access the Rejoice admin / review tooling. The
+     * core LinkStack admin role is always allowed.
+     */
+    public function isRejoiceReviewer(): bool
+    {
+        if (($this->role ?? '') === 'admin') {
+            return true;
+        }
+
+        return in_array($this->rejoice_role, config('rejoice.admin_roles', []), true);
     }
 
     protected static function boot()

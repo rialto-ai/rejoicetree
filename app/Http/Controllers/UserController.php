@@ -125,7 +125,9 @@ class UserController extends Controller
             }
         }
 
-        return view('linkstack.linkstack', ['userinfo' => $userinfo, 'information' => $information, 'links' => $links, 'littlelink_name' => $littlelink_name]);
+        $creatorProfile = \App\Models\CreatorProfile::where('user_id', $id)->first();
+
+        return view('linkstack.linkstack', ['userinfo' => $userinfo, 'information' => $information, 'links' => $links, 'littlelink_name' => $littlelink_name, 'creatorProfile' => $creatorProfile]);
     }
 
     //Show littlelink page as home page if set in config
@@ -163,7 +165,9 @@ class UserController extends Controller
             }
         }
 
-        return view('linkstack.linkstack', ['userinfo' => $userinfo, 'information' => $information, 'links' => $links, 'littlelink_name' => $littlelink_name]);
+        $creatorProfile = \App\Models\CreatorProfile::where('user_id', $id)->first();
+
+        return view('linkstack.linkstack', ['userinfo' => $userinfo, 'information' => $information, 'links' => $links, 'littlelink_name' => $littlelink_name, 'creatorProfile' => $creatorProfile]);
     }
 
     //Redirect to user page

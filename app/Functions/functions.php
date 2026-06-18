@@ -255,3 +255,24 @@ function block_text($text) {
 function bt($text) {
   return block_text($text);
 }
+/**
+ * Read a Rejoice global setting, falling back to the config default.
+ * Persisted overrides live in storage/app/rejoice-settings.json so the
+ * admin Settings screen can change them at runtime.
+ */
+function rejoice_setting($key, $default = null) {
+  static $overrides = null;
+  if ($overrides === null) {
+    $path = storage_path('app/rejoice-settings.json');
+    $overrides = is_file($path) ? (json_decode(file_get_contents($path), true) ?: []) : [];
+  }
+  if (array_key_exists($key, $overrides)) {
+    return $overrides[$key];
+  }
+  return config('rejoice.settings.' . $key, $default);
+}
+
+function set_rejoice_settings(array $values) {
+  $path = storage_path('app/rejoice-settings.json');
+  file_put_contents($path, json_encode($values, JSON_PRETTY_PRINT));
+}
